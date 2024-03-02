@@ -77,7 +77,7 @@ func main() {
 
 	for i, offset := range useGPIOsForRelais {
 
-		direction, err := gpiochip0.GetLineDirection()
+		direction, err := gpiochip0.GetLineDirection(offset)
 		if err != nil {
 			log.Println(err)
 			continue
