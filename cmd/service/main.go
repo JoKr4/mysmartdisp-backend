@@ -100,7 +100,7 @@ func main() {
 			}
 			log.Println("successfully set line direction")
 		} else {
-			log.Println("existing output line", offset)
+			log.Println("direction is already output")
 		}
 
 		route = fmt.Sprintf("/relais%d/on", i)
