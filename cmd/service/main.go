@@ -59,11 +59,12 @@ func main() {
 			}
 			if currentValue == gpiod.LineValueActive {
 				result[i] = true
+			} else {
+				result[i] = false
 			}
-			result[i] = currentValue
 		}
 		w.Header().Set("Content-Type", "application/msgpack")
-		d, err := msgpack.Marshal(state)
+		d, err := msgpack.Marshal(result)
 		if err != nil {
 			log.Println(err)
 		}
