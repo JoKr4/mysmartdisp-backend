@@ -34,13 +34,13 @@ func main() {
 
 	useDevice := "/dev/gpiochip0"
 
-	d := gpiod.NewDevice(useDevice)
-	err := d.Open()
+	gpiochip0 := gpiod.NewDevice(useDevice)
+	err := gpiochip0.Open()
 	if err != nil {
 		log.Println(err)
 		return
 	}
-	defer d.Close()
+	defer gpiochip0.Close()
 	log.Println("successfully opened device")
 
 	route := "/relais/states"
@@ -77,12 +77,21 @@ func main() {
 
 	for i, offset := range useGPIOsForRelais {
 
-		err = d.AddLine(offset, gpiod.LineDirectionOutput)
+		direction, err := gpiochip0.GetLineDirection()
 		if err != nil {
 			log.Println(err)
 			continue
 		}
-		log.Println("successfully added line", offset)
+		if direction != gpiod.LineDirectionOutput {
+			err = gpiochip0.AddLine(offset, gpiod.LineDirectionOutput)
+			if err != nil {
+				log.Println(err)
+				continue
+			}
+			log.Println("successfully added line", offset)
+		} else {
+			log.Println("existing output line", offset)
+		}
 
 		route = fmt.Sprintf("/relais%d/on", i)
 
@@ -90,7 +99,7 @@ func main() {
 			mu.Lock()
 			defer mu.Unlock()
 
-			err := d.SetLineValue(offset, gpiod.LineValueActive)
+			err := gpiochip0.SetLineValue(offset, gpiod.LineValueActive)
 			if err != nil {
 				log.Println(err)
 			}
@@ -103,7 +112,7 @@ func main() {
 			mu.Lock()
 			defer mu.Unlock()
 
-			err := d.SetLineValue(offset, gpiod.LineValueInactive)
+			err := gpiochip0.SetLineValue(offset, gpiod.LineValueInactive)
 			if err != nil {
 				log.Println(err)
 			}
