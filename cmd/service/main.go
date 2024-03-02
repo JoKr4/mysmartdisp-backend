@@ -52,7 +52,7 @@ func main() {
 		result := make([]bool, len(useGPIOsForRelais))
 		for i, offset := range useGPIOsForRelais {
 			result[i] = false // TODO unknown
-			currentValue, err := d.GetLineValue(offset)
+			currentValue, err := gpiochip0.GetLineValue(offset)
 			if err != nil {
 				log.Println(err)
 				continue
