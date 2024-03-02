@@ -77,18 +77,28 @@ func main() {
 
 	for i, offset := range useGPIOsForRelais {
 
+		// NOTE this is not needed for following call "gpiochip0.GetLineDirection(offset)"
+		// but to be able to call set-commands on gpiochip0
+		err = gpiochip0.AddLine(offset)
+		if err != nil {
+			log.Println(err)
+			continue
+		}
+		log.Println("using line", offset)
+
 		direction, err := gpiochip0.GetLineDirection(offset)
 		if err != nil {
 			log.Println(err)
 			continue
 		}
+
 		if direction != gpiod.LineDirectionOutput {
-			err = gpiochip0.AddLine(offset, gpiod.LineDirectionOutput)
+			err = gpiochip0.SetLineDirection(offset, gpiod.LineDirectionOutput)
 			if err != nil {
 				log.Println(err)
 				continue
 			}
-			log.Println("successfully added line", offset)
+			log.Println("successfully set line direction")
 		} else {
 			log.Println("existing output line", offset)
 		}
