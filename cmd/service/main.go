@@ -1,18 +1,15 @@
 package main
 
 import (
-	"encoding/json"
 	"fmt"
 	"log"
 	"net/http"
 	"sync"
 
+	"github.com/shamaton/msgpack/v2"
+
 	"github.com/JoKr4/gpiod2go/pkg/gpiod"
 )
-
-type response struct {
-	State bool `json:"state"`
-}
 
 func main() {
 
@@ -57,13 +54,19 @@ func main() {
 			if err != nil {
 				log.Println(err)
 			}
-			w.Header().Set("Content-Type", "application/json")
-			jenc := json.NewEncoder(w)
+			w.Header().Set("Content-Type", "application/msgpack")
 			state := true
 			if currentValue == gpiod.LineValueInactive {
-				state = true
+				state = false
 			}
-			jenc.Encode(response{state})
+			d, err := msgpack.Marshal(state)
+			if err != nil {
+				log.Println(err)
+			}
+			_, err = w.Write(d)
+			if err != nil {
+				log.Println(err)
+			}
 		})
 
 		route = fmt.Sprintf("/relais%d/on", i)
