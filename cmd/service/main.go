@@ -67,6 +67,7 @@ func main() {
 			if err != nil {
 				log.Println(err)
 			}
+			log.Println("responded state request of", r.RemoteAddr)
 		})
 
 		route = fmt.Sprintf("/relais%d/on", i)
