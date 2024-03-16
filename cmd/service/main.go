@@ -114,6 +114,7 @@ func main() {
 				log.Println(err)
 				return
 			}
+			log.Println("responded toggle request of", r.RemoteAddr)
 			// TODO post current state
 		})
 
