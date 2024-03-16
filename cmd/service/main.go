@@ -103,31 +103,54 @@ func main() {
 			log.Println("direction is already output")
 		}
 
-		route = fmt.Sprintf("/relais%d/on", i)
-
+		route = fmt.Sprintf("/relais%d/toggle", i)
 		http.HandleFunc(route, func(w http.ResponseWriter, r *http.Request) {
+
 			mu.Lock()
 			defer mu.Unlock()
 
-			err := gpiochip0.SetLineValue(offset, gpiod.LineValueActive)
+			val, err := gpiochip0.GetLineValue(offset)
 			if err != nil {
 				log.Println(err)
+				return
+			}
+			var newVal gpiod.LineValue
+			if val == gpiod.LineValueActive {
+
+			}
+			err = gpiochip0.SetLineValue(offset, !val)
+			if err != nil {
+				log.Println(err)
+				return
 			}
 			// TODO post current state
 		})
 
-		route = fmt.Sprintf("/relais%d/off", i)
+		// route = fmt.Sprintf("/relais%d/on", i)
 
-		http.HandleFunc(route, func(w http.ResponseWriter, r *http.Request) {
-			mu.Lock()
-			defer mu.Unlock()
+		// http.HandleFunc(route, func(w http.ResponseWriter, r *http.Request) {
+		// 	mu.Lock()
+		// 	defer mu.Unlock()
 
-			err := gpiochip0.SetLineValue(offset, gpiod.LineValueInactive)
-			if err != nil {
-				log.Println(err)
-			}
-			// TODO post current state
-		})
+		// 	err := gpiochip0.SetLineValue(offset, gpiod.LineValueActive)
+		// 	if err != nil {
+		// 		log.Println(err)
+		// 	}
+		// 	// TODO post current state
+		// })
+
+		// route = fmt.Sprintf("/relais%d/off", i)
+
+		// http.HandleFunc(route, func(w http.ResponseWriter, r *http.Request) {
+		// 	mu.Lock()
+		// 	defer mu.Unlock()
+
+		// 	err := gpiochip0.SetLineValue(offset, gpiod.LineValueInactive)
+		// 	if err != nil {
+		// 		log.Println(err)
+		// 	}
+		// 	// TODO post current state
+		// })
 
 	}
 
