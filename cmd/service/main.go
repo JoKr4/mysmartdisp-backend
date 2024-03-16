@@ -116,9 +116,14 @@ func main() {
 			}
 			var newVal gpiod.LineValue
 			if val == gpiod.LineValueActive {
-
+				newVal = gpiod.LineValueInactive
+			} else if val == gpiod.LineValueInactive {
+				newVal = gpiod.LineValueActive
+			} else {
+				log.Printf("unexpected line value %v for %d\n", val, offset)
+				return
 			}
-			err = gpiochip0.SetLineValue(offset, !val)
+			err = gpiochip0.SetLineValue(offset, newVal)
 			if err != nil {
 				log.Println(err)
 				return
