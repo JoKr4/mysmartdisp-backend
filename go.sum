@@ -2,5 +2,7 @@ github.com/JoKr4/gpiod2go v0.0.0-20240316123640-50cedf959db6 h1:ZQnCXjIfDO4tmO5r
 github.com/JoKr4/gpiod2go v0.0.0-20240316123640-50cedf959db6/go.mod h1:55ao7oEFwRENfTccF4wI36UYdBd0WkN8BeObm5a4MOw=
 github.com/JoKr4/gpiod2go v0.0.0-20240316125144-d8f787d6ab67 h1:tWdom+Q8vM1/x5GpbqNB4UVLSl3H8JYdfJcJvL7gtCs=
 github.com/JoKr4/gpiod2go v0.0.0-20240316125144-d8f787d6ab67/go.mod h1:55ao7oEFwRENfTccF4wI36UYdBd0WkN8BeObm5a4MOw=
+github.com/JoKr4/gpiod2go v0.0.0-20240316125735-def6e6d4e840 h1:Pu3XhBa0At0laW83C2yrg2EzGMAZKeig1LESgFV/tqc=
+github.com/JoKr4/gpiod2go v0.0.0-20240316125735-def6e6d4e840/go.mod h1:55ao7oEFwRENfTccF4wI36UYdBd0WkN8BeObm5a4MOw=
 github.com/shamaton/msgpack/v2 v2.1.1 h1:gAMxOtVJz93R0EwewwUc8tx30n34aV6BzJuwHE8ogAk=
 github.com/shamaton/msgpack/v2 v2.1.1/go.mod h1:aTUEmh31ziGX1Ml7wMPLVY0f4vT3CRsCvZRoSCs+VGg=
