@@ -57,7 +57,7 @@ func newChatServer() *chatServer {
 }
 
 type message struct {
-	index int
+	index uint8
 	state bool
 }
 

@@ -76,11 +76,9 @@ func run() error {
 	toggleIndex := 22
 	toggleState := false
 
-	sigs := make(chan os.Signal, 1)
-	signal.Notify(sigs, os.Interrupt)
-	for {
-		select {
-		case <-tick.C:
+	go func() {
+		for {
+			<-tick.C
 			err = gpiochip0.Toogle(uint(toggleIndex))
 			if err != nil {
 				log.Println(err)
@@ -89,15 +87,21 @@ func run() error {
 			log.Println("toggled")
 			toggleState = !toggleState
 			msg := make([]message, 1)
-			msg[0] = message{index: toggleIndex, state: toggleState}
+			msg[0] = message{index: uint8(toggleIndex), state: toggleState}
 			cs.publish(msg)
-		case err := <-errc:
-			log.Printf("failed to serve: %v", err)
-			break
-		case sig := <-sigs:
-			log.Printf("terminating: %v", sig)
-			break
 		}
+	}()
+
+	sigs := make(chan os.Signal, 1)
+	signal.Notify(sigs, os.Interrupt)
+
+	select {
+	case err := <-errc:
+		log.Printf("failed to serve: %v", err)
+		break
+	case sig := <-sigs:
+		log.Printf("terminating: %v", sig)
+		break
 	}
 
 	ctx, cancel := context.WithTimeout(context.Background(), time.Second*10)
