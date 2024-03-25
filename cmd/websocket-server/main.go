@@ -45,6 +45,14 @@ func run() error {
 	defer gpiochip0.Close()
 	log.Println("successfully opened device")
 
+	for k, _ := range useGPIOsForRelais {
+		err = gpiochip0.AddLine(uint(k))
+		if err != nil {
+			return err
+		}
+		log.Println("successfully added line")
+	}
+
 	l, err := net.Listen("tcp", os.Args[1])
 	if err != nil {
 		return err
@@ -64,6 +72,7 @@ func run() error {
 
 	tick := time.NewTicker(1 * time.Second)
 	defer tick.Stop()
+
 	toggleIndex := 22
 	toggleState := false
 
