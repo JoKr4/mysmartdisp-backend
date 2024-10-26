@@ -103,6 +103,7 @@ func ServeGPIOD() error {
 		}
 
 		route = fmt.Sprintf("/relais%d/toggle", i)
+
 		http.HandleFunc(route, func(w http.ResponseWriter, r *http.Request) {
 
 			mu.Lock()
@@ -113,35 +114,37 @@ func ServeGPIOD() error {
 				log.Println(err)
 				return
 			}
-			log.Println("responded toggle request of", r.RemoteAddr)
+			log.Println("did relais toggle request of", r.RemoteAddr)
 			// TODO post current state
 		})
 
-		// route = fmt.Sprintf("/relais%d/on", i)
+		route = fmt.Sprintf("/relais%d/on", i)
 
-		// http.HandleFunc(route, func(w http.ResponseWriter, r *http.Request) {
-		// 	mu.Lock()
-		// 	defer mu.Unlock()
+		http.HandleFunc(route, func(w http.ResponseWriter, r *http.Request) {
+			mu.Lock()
+			defer mu.Unlock()
 
-		// 	err := gpiochip0.SetLineValue(offset, gpiod.LineValueActive)
-		// 	if err != nil {
-		// 		log.Println(err)
-		// 	}
-		// 	// TODO post current state
-		// })
+			err := gpiochip0.SetLineValue(offset, gpiod.LineValueActive)
+			if err != nil {
+				log.Println(err)
+			}
+			log.Println("did relais on request of", r.RemoteAddr)
+			// TODO post current state
+		})
 
-		// route = fmt.Sprintf("/relais%d/off", i)
+		route = fmt.Sprintf("/relais%d/off", i)
 
-		// http.HandleFunc(route, func(w http.ResponseWriter, r *http.Request) {
-		// 	mu.Lock()
-		// 	defer mu.Unlock()
+		http.HandleFunc(route, func(w http.ResponseWriter, r *http.Request) {
+			mu.Lock()
+			defer mu.Unlock()
 
-		// 	err := gpiochip0.SetLineValue(offset, gpiod.LineValueInactive)
-		// 	if err != nil {
-		// 		log.Println(err)
-		// 	}
-		// 	// TODO post current state
-		// })
+			err := gpiochip0.SetLineValue(offset, gpiod.LineValueInactive)
+			if err != nil {
+				log.Println(err)
+			}
+			log.Println("did relais off request of", r.RemoteAddr)
+			// TODO post current state
+		})
 
 	}
 
