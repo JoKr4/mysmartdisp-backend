@@ -112,7 +112,6 @@ func ServeGPIOD() error {
 			err = gpiochip0.Toogle(offset)
 			if err != nil {
 				log.Println(err)
-				return
 			}
 			log.Println("did relais toggle request of", r.RemoteAddr)
 			// TODO post current state
