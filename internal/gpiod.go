@@ -131,7 +131,7 @@ func ServeGPIOD() error {
 			mu.Lock()
 			defer mu.Unlock()
 
-			err := gpiochip0.SetLineValue(offset, gpiod.LineValueActive)
+			err := gpiochip0.SetLineValue(offset, gpiod.LineValueInactive)
 			if err != nil {
 				log.Println(err)
 			}
@@ -145,7 +145,7 @@ func ServeGPIOD() error {
 			mu.Lock()
 			defer mu.Unlock()
 
-			err := gpiochip0.SetLineValue(offset, gpiod.LineValueInactive)
+			err := gpiochip0.SetLineValue(offset, gpiod.LineValueActive)
 			if err != nil {
 				log.Println(err)
 			}
