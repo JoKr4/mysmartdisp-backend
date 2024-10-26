@@ -3,6 +3,8 @@ package main
 import (
 	"log"
 	"net/http"
+	"os"
+	"os/signal"
 
 	"github.com/JoKr4/mysmartdisp-backend/internal"
 )
@@ -21,5 +23,10 @@ func main() {
 		return
 	}
 
-	http.ListenAndServe(":8090", nil)
+	go http.ListenAndServe(":8090", nil)
+
+	c := make(chan os.Signal, 1)
+	signal.Notify(c, os.Interrupt)
+	<-c
+	internal.CleanupGPIOD()
 }

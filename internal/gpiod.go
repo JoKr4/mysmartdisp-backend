@@ -19,6 +19,14 @@ import (
 // 	erro    relaisState
 // )
 
+var gpiochip0 *gpiod.Device = nil
+
+func CleanupGPIOD() {
+	if gpiochip0 != nil {
+		gpiochip0.Close()
+	}
+}
+
 func ServeGPIOD() error {
 
 	var mu sync.Mutex
@@ -34,12 +42,12 @@ func ServeGPIOD() error {
 
 	useDevice := "/dev/gpiochip0"
 
-	gpiochip0 := gpiod.NewDevice(useDevice)
+	gpiochip0 = gpiod.NewDevice(useDevice)
 	err := gpiochip0.Open()
 	if err != nil {
 		return err
 	}
-	defer gpiochip0.Close()
+	//defer gpiochip0.Close() // NOTE this is done by dedicated cleanup function
 	log.Println("successfully opened device")
 
 	route := "/relais/states"
