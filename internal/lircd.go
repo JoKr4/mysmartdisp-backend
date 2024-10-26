@@ -21,6 +21,7 @@ func ServeLIRCD() error {
 		if err != nil {
 			log.Println(err)
 		}
+		log.Println("did irsend KEY_VOLUMEUP_BURST request of", r.RemoteAddr)
 	})
 
 	return nil
